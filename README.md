@@ -71,10 +71,13 @@ Split the data into Train and test arrays and drop unwanted columns,
 
 `y_4= df['mpg']`
 
-`    df_4  = df.drop('mpg', 'weight','horsepower','cylinders','displacement', axis=1)
+
+`df_4  = df.drop('mpg', 'weight','horsepower','cylinders','displacement', axis=1)
     X_train_4, X_test_4, y_train_4, y_test_4 = train_test_split( df_4, y_4, test_size=0.33, random_state=42)`
 
 Create a pipeline to Sequentially apply a list of transforms and a final estimator, then the final estimator needs to implement to a fit,
+
+
 `pipe_3 = Pipeline(steps=[('scaler', StandardScaler(),),
                         ('Random_forest', RandomForestRegressor(n_estimators=100, 
                         criterion='squared_error', max_depth=None, min_samples_split=2, min_samples_leaf=1,
