@@ -35,7 +35,7 @@ The data must be understandable to make the connection between the columns and t
 
 Display all the columns in a relationship with ‘mpg’,
 
-`for col in df.columns:
+    `for col in df.columns:
     sns.scatterplot(x = col, y = 'mpg', data = df)
     plt.show()`
     
