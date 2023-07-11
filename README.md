@@ -134,3 +134,127 @@ Loading the model to test the data is also done by the same library
     loaded_model = joblib.load("MPG_automobile_0.88_model_randomForest.joblib")
 
     result = loaded_model.score(X_test_4, y_test_4)
+
+# R Programming language 
+## Packages 
+
+library(tidyverse)
+library(caret)
+library(randomForest)
+library(rpart)
+library(Metrics)
+library(ggplot2)
+library(mlr)
+library(tidymodels)
+library(utils)
+
+## Data
+Reading the data is done by using read.csv function:
+
+    df <- read.csv("data/auto-mpg.csv")
+
+Displaying the data mean values and a small brief:
+
+    print(summary(df))
+
+![image](https://github.com/yousefturin/MPG-Automobile-AI-system/assets/94796673/22413b16-48d3-424e-b145-da35fda1f759)
+
+
+Filtering the data to remove non numerical variables as in this case car.name:
+
+    if (!is.numeric(df$non_numeric_variable)) {
+    df <- df[, !names(df) %in% c("car.name")]}
+
+Display the data again:
+
+
+    print(head(df))
+
+![image](https://github.com/yousefturin/MPG-Automobile-AI-system/assets/94796673/08f7776b-8e09-43a8-af6b-dae6d34114cb)
+
+
+## Data Analysis
+ The data must be understandable to make the connection between the columns and the wanted item ’mpg’ and to understand it better and visualize it using the ggplot library and make the Y axis as ‘mpg’ where the X axis as the rest of the columns “create a correlation”, and understand where exactly the mpg is focus on, 
+
+    ggplot(df, aes(x = mpg)) + geom_histogram()
+    for (col in names(df)) {
+    ggplot(df, aes(x = col, y = mpg)) + geom_point()}
+
+![image](https://github.com/yousefturin/MPG-Automobile-AI-system/assets/94796673/7c810a7a-4279-464c-a706-d4c6ad72e388)
+
+Calculate the correlation between the variables using the cor method:
+
+    cor(df, method = "kendall")
+    
+![image](https://github.com/yousefturin/MPG-Automobile-AI-system/assets/94796673/1d15678f-38fa-47e2-b399-80ed721be4da)
+
+
+## Processing Data 
+Create a train control object for cross-validation:
+
+    folds <- caret::createFolds(df$mpg, k = 5)
+    train_control <- caret::trainControl(
+    method = "cv",
+    number = 5,
+    savePredictions = TRUE, 
+    index = folds
+    )
+
+## Training Data 
+Create a Random Forest model for the object:
+
+    rfr <- randomForest(x = df[, !names(df) %in% c("mpg")], y = df$mpg,
+    n_estimators = 100,criterion = "mae", max_depth = None, min_samples_split = 2,
+    min_samples_leaf = 1, min_weight_fraction_leaf = 0, max_leaf_nodes = None,
+    min_impurity_decrease = 0, bootstrap = TRUE,   oob_score = FALSE,
+    n_jobs = None,    random_state = None,    verbose = 0,    warm_start = FALSE,
+    ccp_alpha = 0,    max_samples = None
+    )
+
+## Fitting Data
+Fit the model to the data using cross-validation
+
+    model <- caret::train(
+    x = df[, !names(df) %in% c("mpg")],
+    y = df$mpg,
+    method = "rf",
+    metric = "mae",
+    tuneGrid = data.frame(mtry = c(1, 2, 3)),
+    trControl = train_control,
+    preProcess = c("center", "scale"),
+    tuneLength = 3,
+    model = rfr # pass the model object directly
+    )
+
+## Test Data
+Make predictions on the data:
+
+    y_pred <- predict(model, df)
+Calculate evaluation metrics:
+
+    > mae <- Metrics::mae(y_pred, df$mpg)
+    > cat("Mean Absolute Error:", mae, "\n")
+
+Mean Absolute Error: 0.9672114
+
+    > rmse <- Metrics::rmse(y_pred, df$mpg)
+    > cat("Root Mean Squared Error:", rmse, "\n")
+
+Root Mean Squared Error: 1.357074
+
+    > mape <- Metrics::mape(y_pred, df$mpg)
+
+An Absolute Percentage Error: 0.04144842
+
+## Store Model
+Create a named list containing the model and predictions to return it:
+
+    result <- list(model = model, y_pred = y_pred)
+
+save function that the model can be saved from:
+
+    save_model_predictions <- function(model, y_pred, filepath) {
+        save(list = c("model", "y_pred"), file = filepath)
+    }
+
+    save_model_predictions(model, y_pred, "model_predictions.Rdata")
