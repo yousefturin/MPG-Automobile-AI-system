@@ -105,8 +105,7 @@ Assigning variables to some functions,
     mse_3 = mean_squared_error(y_test_3, prediction_3)
 
     mape_3 = mean_absolute_percentage_error(y_test_3, prediction_3)
-
-
+____________________________
 
     Representation of the percentage of the variance,
     r2_3: 0.8852189559676944
