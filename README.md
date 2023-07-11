@@ -1,9 +1,9 @@
-![image](https://github.com/yousefturin/MPG-Automobile-AI-system/assets/94796673/65453f80-d038-469b-8f21-d8db48d71728)# MPG-Automobile-AI-system
+# MPG-Automobile-AI-system
 This research paper is about the final review of the MPG - Automobile AI system and what processes must be followed to create the algorithm that will predict the Average Mile Per Gallon using two different approaches first one is linear and the second one is random forest. The steps of making such an AI system will be followed get the Dataset, Download the independence, read the data and analysis it, repair the missing data if exist, list the columns of the data, Data analysis, understand the correlation between the columns, create the model, train the data, create a pipeline, fit the data throw pipeline, test the data and store the data in a file where this process will be implemented in python and R using artificial intelligence.
 
 # Python Programming Language
 ## Data
-The data determine how efficient the AI system is so with that said, the data must be treated with precautions, so to understand the data it need to be read it using the Pandas library,
+The data determine how efficient the AI system is so with that said, the data must be treated with precautions, so to understand the data it needs to be read it using the Pandas library,
 
 `df = pd.read_csv('data/auto-mpg.csv')`
 
